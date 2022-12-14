@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+import shortid from 'shortid';
 
-export default function AddEvent({ event }) {
-  const startDay = "09:00";
-  const endDay = "21:00";
-  // const [startTime, setStartTime] = useState("");
-  // const [endTime, setEndTime] = useState("");
-
+export default function AddEvent({ addEvent }) {
+  const startDay = "09:00 am";
+  const endDay = "9:00 pm";
+  
   const EventSchema = Yup.object().shape({
     eventname: Yup.string()
       .required("This field is required")
@@ -28,23 +27,23 @@ export default function AddEvent({ event }) {
       .required("This field is required")
       .test(
         "period",
-        "The time must be between 9 am and 9 pm.",
+        `The time must be between ${startDay} and ${endDay}.`,
         (value) =>
-          moment(value, "HH:mm").isSameOrAfter(moment(startDay, "HH:mm")) &&
-          moment(value, "HH:mm").isSameOrBefore(moment(endDay, "HH:mm"))
+          moment(value, "HH:mm A").isSameOrAfter(moment(startDay, "HH:mm A")) &&
+          moment(value, "HH:mm A").isSameOrBefore(moment(endDay, "HH:mm A"))
       ),
     endTime: Yup.string()
       .required("This field is required")
       .test(
         "period",
-        "The time must be between 9 am and 9 pm.",
+        `The time must be between ${startDay} and ${endDay}.`,
         (value) =>
-          moment(value, "HH:mm").isSameOrAfter(moment(startDay, "HH:mm")) &&
-          moment(value, "HH:mm").isSameOrBefore(moment(endDay, "HH:mm"))
+          moment(value, "HH:mm A").isSameOrAfter(moment(startDay, "HH:mm A")) &&
+          moment(value, "HH:mm A").isSameOrBefore(moment(endDay, "HH:mm A"))
       )
       .when("startTime", (startTime, schema) =>
         schema.test("is-greater", "end time should be greater", (value) =>
-          moment(value, "HH:mm").isSameOrAfter(moment(startTime, "HH:mm"))
+          moment(value, "HH:mm A").isSameOrAfter(moment(startTime, "HH:mm A"))
         )
       ),
   });
@@ -61,7 +60,9 @@ export default function AddEvent({ event }) {
         }}
         validationSchema={EventSchema}
         onSubmit={(values) => {
+          values.id = shortid.generate();
           console.log(values);
+          addEvent(values);
         }}
       >
         {({ errors, touched }) => (
@@ -92,7 +93,7 @@ export default function AddEvent({ event }) {
               <Field type="time" name="endTime" />
               {errors.endTime && touched.endTime && <div>{errors.endTime}</div>}
             </label>
-            <button type="submit" text="Add event" disabled={!errors}>
+            <button type="submit" text="Add event" disabled={errors.eventname || errors.location || errors.startTime || errors.endTime}>
               Submit
             </button>
           </Form>
