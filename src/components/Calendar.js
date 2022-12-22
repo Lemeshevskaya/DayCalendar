@@ -1,65 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
+import "../assets/style/calendar.css";
 
-export default function Calendar( {events} ) {
+export default function Calendar({ events }) {
+  console.log(events);
   const startTime = "9:00 am";
   const endTime = "9:00 pm";
-  let calendar = [];
 
-  const createDay = (events) => {
+  const [calendar, setCalendar] = useState([]);
+
+  useEffect(() => {
+    let fullDayTime = [];
     let currentTime = moment(startTime, "hh:mm A");
-    let timeString;
-    let timeObj;
     while (
       moment(currentTime, "hh:mm A").isSameOrBefore(moment(endTime, "hh:mm A"))
     ) {
-      timeString = currentTime.format("hh:mm A").toString();
-      timeObj = {[timeString]: '0'};
-      if (events.hasOwnProperty(timeString)) {
-    
-        timeObj = {[timeString]: events[timeString]};
-      }
-      calendar.push(timeObj);
-      console.log(calendar);
+      let timeString = currentTime.format("hh:mm A").toString();
+      fullDayTime.push(timeString);
       currentTime = moment(currentTime, "hh:mm A").add(1, "hours").clone();
     }
+    setCalendar(fullDayTime);
+  }, []);
 
-    while (calendar.length > 0) {
-      return calendar.map((item) => (
-        <>
-        <div key = {Object.keys(item)[0]}>{Object.keys(item)[0]}</div>
-          <div></div>
-        </>
-      ));
-    }
-  };
   console.log(calendar);
 
+
+  
   return (
     <>
       <div>Calendar</div>
       <div className="container">
-      {createDay(events)} 
-      </div>
-      {/* {events && (
+        <div className="">
+          {calendar.map((item) => (
+            <div key={item}>{item}</div>
+          ))}
+        </div>
         <ul>
-          {array.forEach(element => {
-            
-          });(let event of events){
-            return (
-              <>
-              <li key={id}>
-  <span>{eventname}</span>
-  <span>{location}</span>
-  <span>{moment(startTime, "hh:mm A").format("hh:mm A").toString()}</span>
-  <span>{moment(endTime, "hh:mm A").format("hh:mm A").toString()}</span>
-  </li>
-              </>
-            )
-          }
-  }
+          {calendar.map((item, i) => {
+            if (events.hasOwnProperty(item)) {
+              return events[item].map(
+                ({ id, location, startTime, endTime, eventname }) => (
+                  <li key={id}>
+                    <span>{eventname}</span>
+                    <span>{location}</span>
+                    <span>
+                      {startTime}
+                    </span>
+                    <span>
+                      {endTime}
+                    </span>
+                  </li>
+                )
+              );
+            } else {
+              return <div key = {i}>{item}</div>;
+            }
+          })}
         </ul>
-      )} */}
+      </div>
     </>
   );
 }

@@ -29,8 +29,8 @@ export default function AddEvent({ addEvent }) {
         "period",
         `The time must be between ${startDay} and ${endDay}.`,
         (value) =>
-          moment(value, "HH:mm A").isSameOrAfter(moment(startDay, "HH:mm A")) &&
-          moment(value, "HH:mm A").isSameOrBefore(moment(endDay, "HH:mm A"))
+          moment(value, "hh:mm A").isSameOrAfter(moment(startDay, "hh:mm A")) &&
+          moment(value, "hh:mm A").isSameOrBefore(moment(endDay, "hh:mm A"))
       ),
     endTime: Yup.string()
       .required("This field is required")
@@ -38,12 +38,12 @@ export default function AddEvent({ addEvent }) {
         "period",
         `The time must be between ${startDay} and ${endDay}.`,
         (value) =>
-          moment(value, "HH:mm A").isSameOrAfter(moment(startDay, "HH:mm A")) &&
-          moment(value, "HH:mm A").isSameOrBefore(moment(endDay, "HH:mm A"))
+          moment(value, "hh:mm A").isSameOrAfter(moment(startDay, "hh:mm A")) &&
+          moment(value, "hh:mm A").isSameOrBefore(moment(endDay, "hh:mm A"))
       )
       .when("startTime", (startTime, schema) =>
         schema.test("is-greater", "end time should be greater", (value) =>
-          moment(value, "HH:mm A").isSameOrAfter(moment(startTime, "HH:mm A"))
+          moment(value, "hh:mm A").isSameOrAfter(moment(startTime, "hh:mm A"))
         )
       ),
   });
@@ -57,12 +57,17 @@ export default function AddEvent({ addEvent }) {
           location: "",
           startTime: "",
           endTime: "",
+          id: '',
         }}
         validationSchema={EventSchema}
-        onSubmit={(values) => {
-          values.id = shortid.generate();
-          console.log(values);
-          addEvent(values);
+        onSubmit={(values, {resetForm}) => {
+          addEvent({
+            ...values,
+            id: shortid.generate(),
+            startTime: moment(values.startTime,"hh:mm A").format("hh:mm A").toString(),
+            endTime: moment(values.endTime,"hh:mm A").format("hh:mm A").toString()
+          });
+          resetForm();
         }}
       >
         {({ errors, touched }) => (
@@ -83,7 +88,7 @@ export default function AddEvent({ addEvent }) {
             </label>
             Start time
             <label>
-              <Field type="time" name="startTime" />
+              <Field type="time" name="startTime" format="HH:mm A"/>
               {errors.startTime && touched.startTime && (
                 <div>{errors.startTime}</div>
               )}
