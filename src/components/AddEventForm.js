@@ -4,7 +4,9 @@ import * as Yup from "yup";
 import moment from "moment";
 import shortid from 'shortid';
 
-export default function AddEvent({ addEvent }) {
+export default function AddEvent({ addEvent , itemEvent}) {
+  console.log(itemEvent);
+  console.log(itemEvent ? itemEvent.eventname : '');
   const startDay = "09:00 am";
   const endDay = "9:00 pm";
   
@@ -53,21 +55,22 @@ export default function AddEvent({ addEvent }) {
       <div>AddEvent</div>
       <Formik
         initialValues={{
-          eventname: "",
-          location: "",
-          startTime: "",
-          endTime: "",
-          id: '',
+          eventname: itemEvent ? itemEvent.eventname : '',
+          location: itemEvent ? itemEvent.location : '',
+          startTime: itemEvent ? itemEvent.startTime : '',
+          endTime: itemEvent ? itemEvent.endTime : '',
+          id: itemEvent ? itemEvent.id : '',
         }}
         validationSchema={EventSchema}
         onSubmit={(values, {resetForm}) => {
+          let createId = shortid.generate();
           addEvent({
             ...values,
-            id: shortid.generate(),
+            id: createId,
             startTime: moment(values.startTime,"hh:mm A").format("hh:mm A").toString(),
             endTime: moment(values.endTime,"hh:mm A").format("hh:mm A").toString()
           });
-          resetForm();
+          resetForm({values:''});
         }}
       >
         {({ errors, touched }) => (
