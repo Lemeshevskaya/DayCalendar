@@ -1,0 +1,5 @@
+.home__main-container {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  border: 1px solid black;
+}

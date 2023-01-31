@@ -6,13 +6,19 @@ export default function Calendar({ calendar }) {
   
   return (
     <>
-      <div>Calendar</div>
-      <div className="container">
-        <div className="">
-          {calendar.map((item) => (
-            <div key={item}>{item}</div>
-          ))}
+      <div className="calendar__timing-container-column">
+        <div className="calendar__timing">
+        {calendar.map((item) => {
+            if(item.substring(3,5) === '00') {
+              return <div className="calendar-minutes" key={item}>{item}</div>
+            } else if (item.substring(3,5) === '30') {
+              return <div className="calendar-minutes" key={item}>{item}</div>
+            } else {
+              return <div className="calendar-minutes" key={item}></div>
+            }
+})}
         </div>
+          
       </div>
     </>
   );

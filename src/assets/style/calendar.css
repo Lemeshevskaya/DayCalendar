@@ -1,5 +1,14 @@
-.container {
-  display: inline-grid;
-  grid-template-columns: 1fr 5fr;
-  grid-template-rows: min-content
+.calendar__timing-container-column {
+  grid-column: 1 / 2;
+  grid-row: 1 / -1;
+  border: 1px solid red;
+}
+.calendar__timing {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.calendar-minutes {
+  height: 1px;
 }

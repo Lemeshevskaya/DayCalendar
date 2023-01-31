@@ -1,0 +1,13 @@
+.events__container {
+  grid-column: 2 / -1;
+  grid-row: 2 / -1;
+  display: grid;
+}
+.events__event { 
+  border: 1px solid blue;
+  position: relative;
+  float: left;
+}
+.event__minute {
+  height: 1px;
+}

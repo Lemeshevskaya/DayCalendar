@@ -2,14 +2,14 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
-import shortid from 'shortid';
+import shortid from "shortid";
 
-export default function AddEvent({ addEvent , itemEvent}) {
+export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
   console.log(itemEvent);
-  console.log(itemEvent ? itemEvent.eventname : '');
+  console.log(itemEvent ? itemEvent.eventname : "");
   const startDay = "09:00 am";
   const endDay = "9:00 pm";
-  
+
   const EventSchema = Yup.object().shape({
     eventname: Yup.string()
       .required("This field is required")
@@ -55,22 +55,24 @@ export default function AddEvent({ addEvent , itemEvent}) {
       <div>AddEvent</div>
       <Formik
         initialValues={{
-          eventname: itemEvent ? itemEvent.eventname : '',
-          location: itemEvent ? itemEvent.location : '',
-          startTime: itemEvent ? itemEvent.startTime : '',
-          endTime: itemEvent ? itemEvent.endTime : '',
-          id: itemEvent ? itemEvent.id : '',
+          eventname: itemEvent ? itemEvent.eventname : "",
+          location: itemEvent ? itemEvent.location : "",
+          startTime: itemEvent ? itemEvent.startTime : "",
+          endTime: itemEvent ? itemEvent.endTime : "",
+          id: itemEvent ? itemEvent.id : shortid.generate(),
         }}
+        enableReinitialize={true}
         validationSchema={EventSchema}
-        onSubmit={(values, {resetForm}) => {
-          let createId = shortid.generate();
-          addEvent({
-            ...values,
-            id: createId,
-            startTime: moment(values.startTime,"hh:mm A").format("hh:mm A").toString(),
-            endTime: moment(values.endTime,"hh:mm A").format("hh:mm A").toString()
-          });
-          resetForm({values:''});
+        onSubmit={(values, { resetForm }) => {
+          let valuesFormat = { ...values };
+          valuesFormat.startTime12 = moment(values.startTime, "hh:mm A").format(
+            "hh:mm A"
+          );
+          valuesFormat.endTime12 = moment(values.endTime, "hh:mm A").format(
+            "hh:mm A"
+          );
+          itemEvent ? changeEvent(valuesFormat) : addEvent(valuesFormat);
+          resetForm({ values: "" });
         }}
       >
         {({ errors, touched }) => (
@@ -91,19 +93,43 @@ export default function AddEvent({ addEvent , itemEvent}) {
             </label>
             Start time
             <label>
-              <Field type="time" name="startTime" format="HH:mm A"/>
+              <Field type="time" name="startTime" format="hh:mm A" />
               {errors.startTime && touched.startTime && (
                 <div>{errors.startTime}</div>
               )}
             </label>
             <label>
               End time
-              <Field type="time" name="endTime" />
+              <Field type="time" name="endTime" format="hh:mm A" />
               {errors.endTime && touched.endTime && <div>{errors.endTime}</div>}
             </label>
-            <button type="submit" text="Add event" disabled={errors.eventname || errors.location || errors.startTime || errors.endTime}>
-              Submit
-            </button>
+            {itemEvent ? (
+              <button
+                type="submit"
+                text="Change event"
+                disabled={
+                  errors.eventname ||
+                  errors.location ||
+                  errors.startTime ||
+                  errors.endTime
+                }
+              >
+                Change event
+              </button>
+            ) : (
+              <button
+                type="submit"
+                text="Add event"
+                disabled={
+                  errors.eventname ||
+                  errors.location ||
+                  errors.startTime ||
+                  errors.endTime
+                }
+              >
+                Submit
+              </button>
+            )}
           </Form>
         )}
       </Formik>
