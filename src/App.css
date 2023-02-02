@@ -1,3 +1,16 @@
+:root {
+  --blue: #5085A5;
+  --darkblue: #31708E;
+  --ligthblue: #8FC1E3;
+}
 .App {
   text-align: center;
+  margin:  0 10%;
+  font-size: 14px;
+}
+.colorLight {
+  background-color: var(--blue);
+}
+.colorDark {
+  background-color: var(--darkblue);
 }

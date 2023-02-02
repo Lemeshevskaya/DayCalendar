@@ -3,7 +3,7 @@ import moment from "moment";
 import AddEventForm from "../components/AddEventForm";
 import Calendar from "../components/Calendar";
 import Events from "../components/Events";
-import '../assets/style/home.css'
+import "../assets/style/home.css";
 
 export default function Home() {
   const current = new Date();
@@ -13,6 +13,10 @@ export default function Home() {
   const [events, setEvents] = useState([]);
   const startTimeDay = "9:00 am";
   const endTimeDay = "9:00 pm";
+  const dayRow = moment(endTimeDay, "hh:mm a").diff(
+    moment(startTimeDay, "hh:mm a"),
+    "minutes"
+  );
 
   const [calendar, setCalendar] = useState([]);
   const [form, setForm] = useState("");
@@ -21,21 +25,25 @@ export default function Home() {
     let fullDayTime = [];
     let currentTime = moment(startTimeDay, "hh:mm A");
     while (
-      moment(currentTime, "hh:mm A").isSameOrBefore(moment(endTimeDay, "hh:mm A"))
+      moment(currentTime, "hh:mm A").isSameOrBefore(
+        moment(endTimeDay, "hh:mm A")
+      )
     ) {
       let timeString = currentTime.format("hh:mm A").toString();
       fullDayTime.push(timeString);
-      currentTime = moment(currentTime, "hh:mm A").add(1, "minutes").clone();
+      currentTime = moment(currentTime, "hh:mm A").add(1, "hours").clone();
     }
+    fullDayTime.pop();
     setCalendar(fullDayTime);
   }, []);
 
   function openForm(itemEvent) {
     console.log(itemEvent);
     setForm(
-      <div>
+      <div className="home__changeEvent">
         <AddEventForm itemEvent={itemEvent} changeEvent={changeEvent} />
         <button onClick={(e) => deleteEvent(itemEvent)}>delete</button>
+        <button onClick={(e) => setForm("")}>X</button>
       </div>
     );
   }
@@ -69,17 +77,23 @@ export default function Home() {
 
   return (
     <section className="home">
-      <h1>Day calendar</h1>
-      <p> Today {date}</p>
+      <h1 className="home__title">Day calendar</h1>
+      <p className="home__today"> Today {date}</p>
       <AddEventForm addEvent={addEvent} />
-      <div className="home__main-container" style={{gridTemplateRows: `repeat(${moment(endTimeDay,"hh:mm a" ).diff(moment(startTimeDay,"hh:mm a"), 'minutes')}, 1fr)`}}>
-          <Calendar calendar={calendar} />
-          <Events events={events} calendar={calendar} openForm={openForm} startTimeDay={startTimeDay}/>  
-        
+      <div
+        className="home__main-container"
+        style={{ gridTemplateRows: `repeat(${dayRow}, 1px)` }}
+      >
+        <Calendar calendar={calendar} />
+        <Events
+          events={events}
+          calendar={calendar}
+          openForm={openForm}
+          startTimeDay={startTimeDay}
+          dayRow={dayRow}
+        />
+        {form}
       </div>
-      
-      
-      {form}
     </section>
   );
 }

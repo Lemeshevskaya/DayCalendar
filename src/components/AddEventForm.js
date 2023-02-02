@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import moment from "moment";
 import shortid from "shortid";
 
+import '../assets/style/addEventForm.css'
+
 export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
   console.log(itemEvent);
   console.log(itemEvent ? itemEvent.eventname : "");
@@ -64,45 +66,44 @@ export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
         enableReinitialize={true}
         validationSchema={EventSchema}
         onSubmit={(values, { resetForm }) => {
-          let valuesFormat = { ...values };
-          valuesFormat.startTime12 = moment(values.startTime, "hh:mm A").format(
-            "hh:mm A"
-          );
-          valuesFormat.endTime12 = moment(values.endTime, "hh:mm A").format(
-            "hh:mm A"
-          );
-          itemEvent ? changeEvent(valuesFormat) : addEvent(valuesFormat);
+          itemEvent ? changeEvent(values) : addEvent(values);
           resetForm({ values: "" });
         }}
       >
         {({ errors, touched }) => (
           <Form>
-            <label>
+            <div className="form__container">
+            <label htmlFor="eventname">
               Name event
-              <Field name="eventname" />
+              </label>
+              <Field name="eventname" label= 'Name event'/>
               {errors.eventname && touched.eventname && (
-                <div>{errors.eventname}</div>
+                <div className="form__error">{errors.eventname}</div>
               )}
-            </label>
-            <label>
+            
+            <label htmlFor="location">
               Location
+              </label>
               <Field name="location" />
               {errors.location && touched.location && (
-                <div>{errors.location}</div>
+                <div className="form__error">{errors.location}</div>
               )}
-            </label>
+            
+            
+            <label htmlFor="startTime">
             Start time
-            <label>
-              <Field type="time" name="startTime" format="hh:mm A" />
+            </label>
+              <Field type="time" name="startTime" />
               {errors.startTime && touched.startTime && (
-                <div>{errors.startTime}</div>
+                <div className="form__error">{errors.startTime}</div>
               )}
-            </label>
-            <label>
+            
+            <label htmlFor="endTime">
               End time
-              <Field type="time" name="endTime" format="hh:mm A" />
-              {errors.endTime && touched.endTime && <div>{errors.endTime}</div>}
-            </label>
+              </label>
+              <Field type="time" name="endTime" />
+              {errors.endTime && touched.endTime && <div className="form__error">{errors.endTime}</div>}
+            
             {itemEvent ? (
               <button
                 type="submit"
@@ -130,6 +131,8 @@ export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
                 Submit
               </button>
             )}
+            </div>
+            
           </Form>
         )}
       </Formik>

@@ -1,5 +1,22 @@
 .home__main-container {
   display: grid;
-  grid-template-columns: repeat(11, 1fr);
+  grid-template-columns: minmax(95px,1fr) 8fr;
   border: 1px solid black;
+  overflow: hidden;
+  position: relative;
+}
+.home__changeEvent {
+  position: absolute;
+  background: white;
+  border: 1px solid gray;
+}
+.home__title {
+  background-color: var(--blue);
+  padding: 10px;
+  color: white;
+  border-radius: 5px;
+}
+.home__today {
+  margin: 10px;
+  color: var(--darkblue);
 }

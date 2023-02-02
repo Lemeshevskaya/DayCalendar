@@ -3,49 +3,86 @@ import Event from "./Event";
 import moment from "moment";
 import "../assets/style/events.css";
 
-export default function Events({ events, calendar, openForm, startTimeDay }) {
-  console.log(startTimeDay);
+export default function Events({ events, openForm, startTimeDay, dayRow }) {
+  console.log(events);
 
-  const [eventsObj, setEventsObj] = useState({});
+  const [eventsNumCol, setEventsNumCol] = useState({});
+  const [maxNumCol, setMaxNumCol] = useState(0);
 
   useEffect(() => {
     let cal = {};
-    for (let i of events) {
-      console.log(i);
-      if (cal.hasOwnProperty(i.startTime12)) {
-        cal[i.startTime12] = [...cal[i.startTime12], i];
-      } else {
-        cal[i.startTime12] = [i];
+    for (let event of events) {
+      let eventStartTime = moment(event.startTime, "HH:mm");
+      let eventEndTime = moment(event.endTime, "HH:mm").subtract(1, "minutes");
+      while (
+        moment(eventStartTime, "HH:mm").isSameOrBefore(
+          moment(eventEndTime, "HH:mm")
+        )
+      ) {
+        let timeString = eventStartTime.format("hh:mm A").toString();
+        eventStartTime = moment(eventStartTime, "HH:mm")
+          .add(1, "minutes")
+          .clone();
+        if (cal.hasOwnProperty(timeString)) {
+          cal[timeString] = 1 + cal[timeString];
+          if (maxNumCol < cal[timeString]) {
+            setMaxNumCol(cal[timeString]);
+          }
+        } else {
+          cal[timeString] = 1;
+        }
       }
     }
-    setEventsObj(cal);
+    setEventsNumCol(cal);
     console.log(cal);
-  }, [events, calendar]);
-  console.log(calendar.length)
-  
+  }, [events]);
+
+  let gridColumn = (event) => {
+    let column = 1;
+    let eventStartTime = moment(event.startTime, "HH:mm");
+    while (
+      moment(eventStartTime, "HH:mm").isSameOrBefore(
+        moment(event.endTime, "HH:mm")
+      )
+    ) {
+      let timeString = eventStartTime.format("hh:mm A").toString();
+      if (column < eventsNumCol[timeString]) {
+        column = eventsNumCol[timeString];
+      }
+      eventStartTime = moment(eventStartTime, "HH:mm")
+        .add(1, "minutes")
+        .clone();
+    }
+    if (column === 1) {
+      return `1 / span ${maxNumCol}`;
+    } else {
+      return "auto";
+    }
+  };
 
   return (
-    <div className="events__container">
-      
-            {/* {events.map((event) => (
-            
-              <div className="events__event"  style={{height:`${moment(event.endTime,"HH:mm A" ).diff(moment(event.startTime,"HH:mm A"), 'minutes')}px`, top: `${moment(event.startTime,"HH:mm A").diff(moment(startTimeDay,"hh:mm a"), 'minutes')}px`}}>
-                <Event event={event} openForm={openForm} />
-              </div>
-          ))} */}
-          {calendar.map((item, i) => {
-  if (eventsObj.hasOwnProperty(item)) {
-    return eventsObj[item].map(
-      (itemEvent) => (
-        <div className='events__event'  style={{gridRow:`${moment(itemEvent.startTime,"HH:mm A" ).diff(moment(startTimeDay,"hh:mm a"), 'minutes')} / span ${moment(itemEvent.endTime,"HH:mm A" ).diff(moment(startTimeDay,"hh:mm a"), 'minutes')}`}}>
-                <Event event={itemEvent} openForm={openForm} />
-              </div>
-      )
-    );
-  } else {
-    return <div key = {i} className={`event__minute ${item}`}></div>;
-  }
-})}
+    <div
+      className="events__container"
+      style={{ gridTemplateRows: `repeat(${dayRow}, 1px)` }}
+    >
+      {events.map((event) => (
+        <div
+          className="events__event"
+          style={{
+            gridRow: `${moment(event.startTime, "HH:mm A").diff(
+              moment(startTimeDay, "hh:mm a"),
+              "minutes"
+            )} / ${moment(event.endTime, "HH:mm A").diff(
+              moment(startTimeDay, "hh:mm a"),
+              "minutes"
+            )}`,
+            gridColumn: gridColumn(event),
+          }}
+          onClick={(e) => openForm(event)}
+        >
+          <Event event={event} />
+        </div>
+      ))}
     </div>
   );
 }

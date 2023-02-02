@@ -9,6 +9,19 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.calendar-minutes {
-  height: 1px;
+.calendar__hour {
+  flex-grow: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+.calendar__minutes {
+  box-sizing: border-box;
+  flex-grow: 2;
+  color: white;
+  display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

@@ -1,13 +1,17 @@
-import React from 'react'
+import React from "react";
+import moment from "moment";
 
-export default function Event({event, openForm}) {
+import '../assets/style/event.css'
+
+export default function Event({ event }) {
+  let startTime12 = moment(event.startTime, "HH:mm").format("hh:mm A");
+  let endTime12 = moment(event.endTime, "HH:mm").format("hh:mm A");
   return (
-    
-      <li key={event.id} onClick={(e) => openForm(event)}>
-        <span>{event.eventname}</span>
-        <span>{event.location}</span>
-        <span>{event.startTime12}</span>
-        <span>{event.endTime12}</span>
-      </li>
-  )
+    <li key={event.id} className='event__container'>
+      <span>{event.eventname}</span>
+      <span>{event.location}</span>
+      <span>{startTime12}</span>
+      <span>{endTime12}</span>
+    </li>
+  );
 }
