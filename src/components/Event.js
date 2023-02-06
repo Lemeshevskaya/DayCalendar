@@ -10,8 +10,12 @@ export default function Event({ event }) {
     <li key={event.id} className='event__container'>
       <span>{event.eventname}</span>
       <span>{event.location}</span>
+      <div>
       <span>{startTime12}</span>
+      <span> - </span>
       <span>{endTime12}</span>
+      </div>
+      
     </li>
   );
 }

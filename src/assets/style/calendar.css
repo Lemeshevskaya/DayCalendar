@@ -1,7 +1,6 @@
 .calendar__timing-container-column {
   grid-column: 1 / 2;
   grid-row: 1 / -1;
-  border: 1px solid red;
 }
 .calendar__timing {
   height: 100%;
@@ -24,4 +23,5 @@
   display: flex;
     align-items: center;
     justify-content: flex-end;
+    padding-right: 0.3rem;
 }

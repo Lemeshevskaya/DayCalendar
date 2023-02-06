@@ -2,7 +2,6 @@
   grid-column: 2 / -1;
   grid-row: 2 / -1;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 4fr);
   background-color: #F7F9FB;
 }
 .events__event { 

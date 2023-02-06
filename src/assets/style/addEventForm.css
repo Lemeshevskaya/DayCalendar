@@ -10,10 +10,11 @@
     font-size: 1rem;
     border-radius: 0.3rem;
     border: 1px solid #ced4da;
-    margin-bottom: 0.8rem;
 }
 .form__container label {
   min-width: 50px;
+  margin-top: 1rem;
+  align-self: flex-start;
 }
 .form__error {
   color: brown;

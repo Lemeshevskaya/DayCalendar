@@ -41,9 +41,8 @@ export default function Home() {
     console.log(itemEvent);
     setForm(
       <div className="home__changeEvent">
-        <AddEventForm itemEvent={itemEvent} changeEvent={changeEvent} />
-        <button onClick={(e) => deleteEvent(itemEvent)}>delete</button>
-        <button onClick={(e) => setForm("")}>X</button>
+        <AddEventForm itemEvent={itemEvent} changeEvent={changeEvent} deleteEvent ={deleteEvent}/>
+        <button className="home__close" onClick={(e) => setForm("")}>X</button>
       </div>
     );
   }

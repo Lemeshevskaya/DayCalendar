@@ -6,7 +6,7 @@ import shortid from "shortid";
 
 import '../assets/style/addEventForm.css'
 
-export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
+export default function AddEvent({ addEvent, changeEvent, deleteEvent, itemEvent }) {
   console.log(itemEvent);
   console.log(itemEvent ? itemEvent.eventname : "");
   const startDay = "09:00 am";
@@ -54,7 +54,6 @@ export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
 
   return (
     <>
-      <div>AddEvent</div>
       <Formik
         initialValues={{
           eventname: itemEvent ? itemEvent.eventname : "",
@@ -105,6 +104,7 @@ export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
               {errors.endTime && touched.endTime && <div className="form__error">{errors.endTime}</div>}
             
             {itemEvent ? (
+              <>
               <button
                 type="submit"
                 text="Change event"
@@ -117,6 +117,9 @@ export default function AddEvent({ addEvent, changeEvent, itemEvent }) {
               >
                 Change event
               </button>
+              <button onClick={(e) => deleteEvent(itemEvent)}>Delete event</button>
+              </>
+              
             ) : (
               <button
                 type="submit"
