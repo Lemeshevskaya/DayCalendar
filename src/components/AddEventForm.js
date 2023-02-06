@@ -4,11 +4,14 @@ import * as Yup from "yup";
 import moment from "moment";
 import shortid from "shortid";
 
-import '../assets/style/addEventForm.css'
+import "../assets/style/addEventForm.css";
 
-export default function AddEvent({ addEvent, changeEvent, deleteEvent, itemEvent }) {
-  console.log(itemEvent);
-  console.log(itemEvent ? itemEvent.eventname : "");
+export default function AddEvent({
+  addEvent,
+  changeEvent,
+  deleteEvent,
+  itemEvent,
+}) {
   const startDay = "09:00 am";
   const endDay = "9:00 pm";
 
@@ -72,70 +75,63 @@ export default function AddEvent({ addEvent, changeEvent, deleteEvent, itemEvent
         {({ errors, touched }) => (
           <Form>
             <div className="form__container">
-            <label htmlFor="eventname">
-              Name event
-              </label>
-              <Field name="eventname" label= 'Name event'/>
+              <label htmlFor="eventname">Name event</label>
+              <Field name="eventname" label="Name event" />
               {errors.eventname && touched.eventname && (
                 <div className="form__error">{errors.eventname}</div>
               )}
-            
-            <label htmlFor="location">
-              Location
-              </label>
+
+              <label htmlFor="location">Location</label>
               <Field name="location" />
               {errors.location && touched.location && (
                 <div className="form__error">{errors.location}</div>
               )}
-            
-            
-            <label htmlFor="startTime">
-            Start time
-            </label>
+
+              <label htmlFor="startTime">Start time</label>
               <Field type="time" name="startTime" />
               {errors.startTime && touched.startTime && (
                 <div className="form__error">{errors.startTime}</div>
               )}
-            
-            <label htmlFor="endTime">
-              End time
-              </label>
+
+              <label htmlFor="endTime">End time</label>
               <Field type="time" name="endTime" />
-              {errors.endTime && touched.endTime && <div className="form__error">{errors.endTime}</div>}
-            
-            {itemEvent ? (
-              <>
-              <button
-                type="submit"
-                text="Change event"
-                disabled={
-                  errors.eventname ||
-                  errors.location ||
-                  errors.startTime ||
-                  errors.endTime
-                }
-              >
-                Change event
-              </button>
-              <button onClick={(e) => deleteEvent(itemEvent)}>Delete event</button>
-              </>
-              
-            ) : (
-              <button
-                type="submit"
-                text="Add event"
-                disabled={
-                  errors.eventname ||
-                  errors.location ||
-                  errors.startTime ||
-                  errors.endTime
-                }
-              >
-                Submit
-              </button>
-            )}
+              {errors.endTime && touched.endTime && (
+                <div className="form__error">{errors.endTime}</div>
+              )}
+
+              {itemEvent ? (
+                <>
+                  <button
+                    type="submit"
+                    text="Change event"
+                    disabled={
+                      errors.eventname ||
+                      errors.location ||
+                      errors.startTime ||
+                      errors.endTime
+                    }
+                  >
+                    Change event
+                  </button>
+                  <button onClick={(e) => deleteEvent(itemEvent)}>
+                    Delete event
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="submit"
+                  text="Add event"
+                  disabled={
+                    errors.eventname ||
+                    errors.location ||
+                    errors.startTime ||
+                    errors.endTime
+                  }
+                >
+                  Submit
+                </button>
+              )}
             </div>
-            
           </Form>
         )}
       </Formik>

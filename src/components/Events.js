@@ -4,7 +4,6 @@ import moment from "moment";
 import "../assets/style/events.css";
 
 export default function Events({ events, openForm, startTimeDay, dayRow }) {
-  console.log(events);
 
   const [eventsNumCol, setEventsNumCol] = useState({});
   const [maxNumCol, setMaxNumCol] = useState(0);
@@ -34,7 +33,6 @@ export default function Events({ events, openForm, startTimeDay, dayRow }) {
       }
     }
     setEventsNumCol(cal);
-    console.log(cal);
   }, [events]);
 
   let gridColumn = (event) => {
@@ -67,6 +65,7 @@ export default function Events({ events, openForm, startTimeDay, dayRow }) {
     >
       {events.map((event) => (
         <div
+          key={event.id}
           className="events__event"
           style={{
             gridRow: `${moment(event.startTime, "HH:mm A").diff(

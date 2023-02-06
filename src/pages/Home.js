@@ -38,7 +38,6 @@ export default function Home() {
   }, []);
 
   function openForm(itemEvent) {
-    console.log(itemEvent);
     setForm(
       <div className="home__changeEvent">
         <AddEventForm itemEvent={itemEvent} changeEvent={changeEvent} deleteEvent ={deleteEvent}/>
@@ -71,7 +70,6 @@ export default function Home() {
     }
     setEvents(copyEvents);
     setForm("");
-    console.log(events);
   }
 
   return (

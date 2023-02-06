@@ -1,6 +1,6 @@
 .home__main-container {
   display: grid;
-  grid-template-columns: minmax(66px,95px) 3fr;
+  grid-template-columns: minmax(66px, 95px) 3fr;
   border: 1px solid var(--darkblue);
   border-radius: 0.3rem;
   position: relative;

@@ -2,10 +2,10 @@
   grid-column: 2 / -1;
   grid-row: 2 / -1;
   display: grid;
-  background-color: #F7F9FB;
+  background-color: #f7f9fb;
 }
-.events__event { 
-  background-color: #8FC1E3;
+.events__event {
+  background-color: #8fc1e3;
   border-radius: 5px;
   border: 1px solid var(--blue);
   box-sizing: border-box;
